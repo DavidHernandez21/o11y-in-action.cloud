@@ -18,8 +18,9 @@ exporters:
     loglevel: debug
   prometheus: # <1>
     endpoint: "0.0.0.0:9292"
-  jaeger: # <2>
-    endpoint: "jaeger:14250"
+  otlp/jaeger: # <2>
+    # https://opentelemetry.io/blog/2023/jaeger-exporter-collector-migration/
+    endpoint: "jaeger:4317"
     tls:
       insecure: true
 
@@ -37,4 +38,4 @@ service:
     traces: # <4>
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, jaeger]
+      exporters: [logging, otlp/jaeger]
