@@ -104,7 +104,7 @@ func handleEcho(w http.ResponseWriter, r *http.Request) {
 	span.SetAttributes( // <3>
 		attribute.String("http_status_code", strconv.Itoa(http.StatusOK)),
 	)
-	fmt.Fprintf(w, message)
+	fmt.Fprint(w, message)
 }
 
 var (
@@ -119,6 +119,7 @@ var (
 )
 
 func main() {
+
 	shutdown, err := initProvider()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -131,7 +132,8 @@ func main() {
 		}
 	}()
 
-	rand.Seed(time.Now().UnixNano())
+	
+	rand.New(rand.NewSource(time.Now().UnixNano())) 
 	registry.MustRegister(invokes)
 	log.SetFormatter(&log.JSONFormatter{})
 	http.HandleFunc("/echo", handleEcho)

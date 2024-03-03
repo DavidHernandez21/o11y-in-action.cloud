@@ -8,7 +8,7 @@ datasources:
   jsonData:
     httpMethod: POST
     prometheusType: Prometheus
-    prometheusVersion: 2.33.4
+    prometheusVersion: 2.50.1
     exemplarTraceIdDestinations:
     - datasourceUid: Jaeger
       name: traceID

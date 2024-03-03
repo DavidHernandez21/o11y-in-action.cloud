@@ -1,7 +1,6 @@
-version: "3"
 services:
   load-gen:
-    image: ellerbrock/alpine-bash-curl-ssl:latest
+    image: alpine-bash-curl-ssl:0.1.0
     command:
     - "/bin/bash"
     - "-c"
@@ -15,7 +14,7 @@ services:
     depends_on:
     - otel-col
   otel-col:
-    image: otel/opentelemetry-collector-contrib:0.74.0
+    image: otel/opentelemetry-collector-contrib:0.95.0
     command: [
       "--config=/conf/otel-collector-config.yaml"
     ]
@@ -28,7 +27,7 @@ services:
     - prometheus
     - jaeger
   prometheus:
-    image: prom/prometheus:v2.33.4
+    image: prom/prometheus:v2.50.1
     restart: always
     ports:
     - "9090:9090"
@@ -40,17 +39,17 @@ services:
     - "--enable-feature=exemplar-storage" # <1>
     - "--web.enable-lifecycle"
   jaeger:
-    image: jaegertracing/all-in-one:1.43
+    image: jaegertracing/all-in-one:1.54
     ports:
     - "6831:6831/udp"
     - "16686:16686"
     - "14268:14268"
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana-enterprise:latest
     ports:
     - "3000:3000"
     volumes: # <2>
-    - ./grafana-storage:/var/lib/grafana
+    -   grafana-storage:/var/lib/grafana
     - ./grafana:/etc/grafana/provisioning
     - ./grafana/dashboards:/var/lib/grafana/dashboards
     - ./grafana/grafana.ini:/etc/grafana/grafana.ini

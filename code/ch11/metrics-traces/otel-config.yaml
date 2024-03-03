@@ -24,8 +24,9 @@ exporters:
     enable_open_metrics: true # <1>
     resource_to_telemetry_conversion:
       enabled: true
-  jaeger:
-    endpoint: jaeger:14250
+  otlp/jaeger: # <2>
+    # https://opentelemetry.io/blog/2023/jaeger-exporter-collector-migration/
+    endpoint: "jaeger:4317"
     tls:
       insecure: true
 
@@ -41,4 +42,4 @@ service:
     traces:
       receivers: [ otlp ]
       processors: [ batch ]
-      exporters: [ logging, jaeger ]
+      exporters: [ logging, otlp/jaeger ]
